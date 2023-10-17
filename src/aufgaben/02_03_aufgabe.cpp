@@ -21,17 +21,45 @@ public:
         daten_ = daten;
         next_ = NULL;
     }
+    int TailElements(){
+        int count = 0;
+        for (Node *AktuellesElement = this; AktuellesElement != NULL; AktuellesElement = AktuellesElement->next_)
+        {
+            count++;
+        }
+        return count;
+    }
 };
 
 void ausgabeSingleLinkedList(Node *head)
 {
     // todo implentieren der Ausgabefunktion
     std::cout << "Ausgabe Single Linked List" << std::endl;
+    for (Node *AktuellesElement = head; AktuellesElement != NULL; AktuellesElement = AktuellesElement->next_)
+    {
+        std::cout << AktuellesElement->daten_ << "->";
+    }
+    std::cout << "NULL" << std::endl;
 }
 
 Node *loescheNLetztesElement(Node *head, int index)
 {
     // todo implentieren der Loeschfunktion
+    int count = head->TailElements();
+    int NLetzeselement = count - index;
+    count = 1;
+    Node *AktuellesElement;
+
+    for(AktuellesElement = head; AktuellesElement != NULL && count < NLetzeselement; AktuellesElement = AktuellesElement->next_)
+        count++;
+    
+    if(AktuellesElement==NULL) return head;
+    if(AktuellesElement->next_==NULL) return head;
+    
+    Node *NaechstesElement = AktuellesElement->next_->next_;
+    delete AktuellesElement->next_;
+    AktuellesElement->next_ = NaechstesElement;
+
     return head;
 }
 

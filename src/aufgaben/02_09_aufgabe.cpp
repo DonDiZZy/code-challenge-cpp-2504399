@@ -1,10 +1,12 @@
 
 #include <iostream>
 #include <thread>
+#include <mutex>
 
 class ZaehlerImpl{
     private:
         int zaehler_;
+        std::mutex zaehler_mutex_;
 
 
     public:
@@ -13,7 +15,9 @@ class ZaehlerImpl{
 
         void erhoeheZahler(int zahl){
             // todo implementieren Sie hier eine thread safe erhoehung um zahl
-             std::cout << "Erhoehe um " << zahl << std::endl;
+             std::lock_guard<std::mutex> lock{zaehler_mutex_};
+             std::cout << "Erhoehe um " << zahl << std::endl;             
+             zaehler_+=zahl;
         }
 
         void ausgabeZaehler(){

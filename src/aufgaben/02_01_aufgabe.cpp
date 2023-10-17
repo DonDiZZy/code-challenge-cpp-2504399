@@ -1,10 +1,39 @@
 #include <iostream>
 #include <vector>
+#include <map>
+
+namespace Calc{
+    template<typename T>
+    static T Volumen(T a, T b){
+        return a * b;
+    }
+    template<typename T>
+    static T Max(T a, T b){
+        if(a>b) return a;
+        return b;
+    }
+    template<typename T>
+    static T Min(T a, T b){
+        if(a<b) return a;
+        return b;
+    }
+};
 
 int berechneVolumen(std::vector<int> eingabe)
 {
     // todo berechne Volumen
-    return 0;
+    int MaxVolumen = 0;
+    
+    for(std::vector<int>::iterator it = eingabe.begin();it!=eingabe.end();++it){
+        int Volumen = 0, b=0;
+        std::vector<int>::iterator it2 = it;
+        for (; it2 != eingabe.end(); ++it2,b++){
+            int a = Calc::Min(*it,*it2);
+            Volumen = Calc::Volumen(a,b);
+            if(Volumen>MaxVolumen) MaxVolumen=Volumen;    
+        }
+    }
+    return MaxVolumen;
 }
 
 int main()

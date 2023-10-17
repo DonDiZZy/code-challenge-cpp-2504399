@@ -2,8 +2,20 @@
 
 double exponentFunktion(int basis, int exponent)
 {
-    // Implementieren Sie hier die exponentialfunktion
-    return 0.0;
+    int exponentwert = 1;
+    int ungerade = 1;
+
+    if(exponent == 0) return 1;
+    if(exponent == 1) return basis;
+    if(exponent == 2) return basis * basis;
+    if(exponent%2==1){
+        exponent--;
+        ungerade = basis;
+    }
+    exponentwert *= exponentFunktion(basis,exponent/2);
+    exponentwert *= exponentwert * ungerade;
+
+    return exponentwert;
 }
 
 int main()

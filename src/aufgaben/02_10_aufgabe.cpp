@@ -2,10 +2,15 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <mutex>
 
 class FooBarAusgabe{
+    int zaehler_;
+    std::mutex mtx_;
+    std::condition_variable cond_;
+
     public:
-        FooBarAusgabe(){};
+        FooBarAusgabe(){ zaehler_ = 0;};
         ~FooBarAusgabe(){};
 
         void runFoo(){
@@ -23,12 +28,20 @@ class FooBarAusgabe{
         }
 
         void foo(){
-            // todo implementieren Sie hier 
-             std::cout << "foo";
+            std::unique_lock<std::mutex> lock(mtx_);
+            if(zaehler_ % 2 != 0)
+                cond_.wait(lock);
+            std::cout << "foo";
+            zaehler_++;
+            cond_.notify_one();
         }
         void bar(){
-            //todo implementieren Sie hier
+            std::unique_lock<std::mutex> lock(mtx_);
+            if(zaehler_ % 2 == 0)
+                cond_.wait(lock);
             std::cout << "bar " << std::endl;
+            zaehler_++;
+            cond_.notify_one();
         }
 };
 

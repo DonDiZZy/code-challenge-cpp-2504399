@@ -1,11 +1,16 @@
 
 #include <iostream>
 #include <thread>
+#include <semaphore>
 
 class BrotBauer{
+private:
+    
+     brot_semaphor;
+    sem_t kaese_semaphor;
 
     public:
-        BrotBauer(){};
+        BrotBauer(){zaehler_ = 0;};
         ~BrotBauer(){};
 
         void runBrot(){
@@ -23,13 +28,19 @@ class BrotBauer{
         }
 
         void brot(){
-            // todo implementieren Sie hier die synchronisation
+            std::unique_lock<std::mutex> lock(mtx_);
+            if(zaehler_ % 3 != 0) cond_.wait(lock);
              std::cout << "Brot";
+             zaehler_++;
+             cond_.notify_one();
         }
 
         void kaese(){
-            // todo implementieren Sie hier die synchronisation
+            std::unique_lock<std::mutex> lock(mtx_);
+            if(zaehler_ % 3 == 0) cond_.wait(lock);
             std::cout << "Kaese";
+            zaehler_++;
+            cond_.notify_one();
         }
 };
 

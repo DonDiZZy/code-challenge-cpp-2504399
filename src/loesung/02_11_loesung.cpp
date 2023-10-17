@@ -1,7 +1,7 @@
 
 #include <iostream>
 #include <thread>
-#include <semaphore.h>
+#include "semaphore.h"
 
 class BrotBauer
 {
